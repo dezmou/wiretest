@@ -37,7 +37,7 @@ async function loadFrame(file: File): Promise<HTMLImageElement> {
 }
 
 async function addSequenceFromFiles(images: File[]) {
-  const files = images.sort(naturalSort).reverse()
+  const files = images.sort(naturalSort)
   if (files.length === 0) return
 
   const frames = await Promise.all(files.map(loadFrame))
@@ -59,8 +59,7 @@ async function applyZonesFromFile(file: File) {
   }
   try {
     const zones = await parse3DmaxZone(file)
-    // Frames were reversed on load, so reverse the per-frame zones to match.
-    current.setZones(zones.reverse())
+    current.setZones(zones)
   } catch (err) {
     console.error(err)
     alert(`Could not parse "${file.name}" as a 3ds Max zone export.`)

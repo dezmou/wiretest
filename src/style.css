@@ -1,0 +1,205 @@
+:root {
+  --text: #6b6375;
+  --text-h: #08060d;
+  --bg: #fff;
+  --panel: #faf9fb;
+  --border: #e5e4e7;
+  --accent: #aa3bff;
+  --accent-bg: rgba(170, 59, 255, 0.1);
+  --shadow:
+    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+
+  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  font: 16px/145% var(--sans);
+  color-scheme: light dark;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #9ca3af;
+    --text-h: #f3f4f6;
+    --bg: #16171d;
+    --panel: #1d1e26;
+    --border: #2e303a;
+    --accent: #c084fc;
+    --accent-bg: rgba(192, 132, 252, 0.15);
+    --shadow:
+      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+#app {
+  width: 960px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 32px 20px 80px;
+  min-height: 100svh;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+#app.has-seq header {
+  display: none;
+}
+header h1 {
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: -1px;
+  color: var(--text-h);
+  margin: 0 0 8px;
+}
+header p {
+  margin: 0;
+}
+
+#stage {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.empty {
+  text-align: center;
+  padding: 64px 20px;
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  color: var(--text);
+}
+
+/* --- A single sequence card --- */
+
+.seq {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.seq-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  font: 13px/1 var(--mono);
+}
+.seq-label {
+  color: var(--text-h);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.seq-shift {
+  flex: none;
+  display: flex;
+  gap: 6px;
+}
+.seq-shift[hidden] {
+  display: none;
+}
+.seq-shift button {
+  font: 12px/1 var(--mono);
+  padding: 5px 9px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text-h);
+  cursor: pointer;
+}
+.seq-shift button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.seq-scale {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+  font: 13px/1 var(--mono);
+  color: var(--text);
+  white-space: nowrap;
+}
+.seq-scale[hidden] {
+  display: none;
+}
+.seq-scale input[type='range'] {
+  flex: 1;
+  accent-color: var(--accent);
+}
+.seq-scale-val {
+  min-width: 44px;
+  text-align: right;
+  color: var(--text-h);
+}
+
+.seq-canvas {
+  display: block;
+  width: 100%;
+  max-height: 70svh;
+  background:
+    repeating-conic-gradient(#0000000d 0% 25%, transparent 0% 50%) 50% / 24px 24px;
+  cursor: ew-resize;
+  touch-action: none;
+  outline: none;
+}
+.seq-canvas.dragging {
+  cursor: grabbing;
+}
+.seq-canvas:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.seq-track {
+  height: 6px;
+  background: var(--border);
+  cursor: pointer;
+  touch-action: none;
+}
+.seq-progress {
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+}
+
+/* --- Full-window drop overlay --- */
+
+#dropzone[hidden] {
+  display: none;
+}
+#dropzone {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  backdrop-filter: blur(2px);
+  pointer-events: none;
+}
+#dropzone span {
+  padding: 32px 48px;
+  border: 3px dashed var(--accent);
+  border-radius: 16px;
+  font-size: 20px;
+  color: var(--accent);
+  background: var(--accent-bg);
+}
